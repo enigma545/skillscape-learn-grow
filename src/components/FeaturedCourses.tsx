@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Clock, Users, Star, ArrowRight } from "lucide-react";
+import { Link } from "react-router-dom";
 import ictImage from "@/assets/course-ict.jpg";
 import craftsImage from "@/assets/course-crafts.jpg";
 import businessImage from "@/assets/course-business.jpg";
@@ -120,8 +121,13 @@ const FeaturedCourses = () => {
                 </div>
               </CardContent>
 
-              <CardFooter className="pt-0">
-                <Button className="w-full group/btn">
+              <CardFooter className="pt-0 gap-2">
+                <Button asChild className="flex-1">
+                  <Link to={`/courses/${course.id}`}>
+                    View Details
+                  </Link>
+                </Button>
+                <Button className="flex-1 group/btn">
                   Enroll Now
                   <ArrowRight className="h-4 w-4 ml-2 group-hover/btn:translate-x-1 transition-transform" />
                 </Button>
@@ -131,9 +137,11 @@ const FeaturedCourses = () => {
         </div>
 
         <div className="text-center">
-          <Button variant="outline" size="lg">
-            View All Courses
-            <ArrowRight className="h-4 w-4 ml-2" />
+          <Button asChild variant="outline" size="lg">
+            <Link to="/courses">
+              View All Courses
+              <ArrowRight className="h-4 w-4 ml-2" />
+            </Link>
           </Button>
         </div>
       </div>
