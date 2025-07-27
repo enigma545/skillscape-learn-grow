@@ -340,14 +340,9 @@ const CourseDetail = () => {
                 <CardContent className="p-6">
                   <div className="text-center mb-6">
                     <div className="flex items-center justify-center gap-2 mb-2">
-                      <span className="text-3xl font-bold text-primary">{course.price}</span>
-                      {course.originalPrice && (
-                        <span className="text-lg text-muted-foreground line-through">
-                          {course.originalPrice}
-                        </span>
-                      )}
+                      <span className="text-3xl font-bold text-primary">Free</span>
                     </div>
-                    <p className="text-sm text-muted-foreground">One-time payment</p>
+                    <p className="text-sm text-muted-foreground">No payment required</p>
                   </div>
 
                   <div className="space-y-4 mb-6">

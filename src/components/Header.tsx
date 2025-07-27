@@ -11,9 +11,9 @@ const Header = () => {
   const navLinks = [
     { label: "Home", href: "/" },
     { label: "Courses", href: "/courses" },
+    { label: "About", href: "/about" },
+    { label: "Contact", href: "/contact" },
     { label: "Dashboard", href: "/dashboard" },
-    { label: "About", href: "#about" },
-    { label: "Contact", href: "#contact" },
   ];
 
   return (
@@ -63,12 +63,16 @@ const Header = () => {
 
         {/* Desktop Actions */}
         <div className="hidden md:flex items-center gap-4">
-          <Button variant="ghost" size="sm">
-            <User className="h-4 w-4 mr-2" />
-            Login
+          <Button asChild variant="ghost" size="sm">
+            <Link to="/login">
+              <User className="h-4 w-4 mr-2" />
+              Login
+            </Link>
           </Button>
-          <Button variant="hero" size="sm">
-            Get Started
+          <Button asChild variant="hero" size="sm">
+            <Link to="/login">
+              Get Started
+            </Link>
           </Button>
         </div>
 
@@ -119,12 +123,16 @@ const Header = () => {
               </nav>
 
               <div className="flex flex-col gap-3">
-                <Button variant="ghost" className="justify-start">
-                  <User className="h-4 w-4 mr-2" />
-                  Login
+                <Button asChild variant="ghost" className="justify-start">
+                  <Link to="/login">
+                    <User className="h-4 w-4 mr-2" />
+                    Login
+                  </Link>
                 </Button>
-                <Button variant="hero">
-                  Get Started
+                <Button asChild variant="hero">
+                  <Link to="/login">
+                    Get Started
+                  </Link>
                 </Button>
               </div>
             </div>

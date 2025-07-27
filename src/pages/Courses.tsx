@@ -215,7 +215,7 @@ const Courses = () => {
 
                 <CardHeader>
                   <div className="flex items-center justify-between mb-2">
-                    <span className="text-2xl font-bold text-primary">{course.price}</span>
+                    <span className="text-2xl font-bold text-primary">Free</span>
                     <div className="flex items-center gap-1">
                       <Star className="h-4 w-4 fill-current text-secondary" />
                       <span className="text-sm font-medium">{course.rating}</span>
