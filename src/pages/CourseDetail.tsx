@@ -7,7 +7,8 @@ import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { 
   Clock, Users, Star, Play, Download, CheckCircle, 
-  Calendar, Globe, Award, ArrowLeft, Heart, Share2
+  Calendar, Globe, Award, ArrowLeft, Heart, Share2,
+  FileText, BookOpen, Lock
 } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -188,9 +189,10 @@ const CourseDetail = () => {
 
               {/* Course Content Tabs */}
               <Tabs defaultValue="overview" className="mb-8">
-                <TabsList className="grid w-full grid-cols-4">
+                <TabsList className="grid w-full grid-cols-5">
                   <TabsTrigger value="overview">Overview</TabsTrigger>
                   <TabsTrigger value="curriculum">Curriculum</TabsTrigger>
+                  <TabsTrigger value="quizzes">Quizzes</TabsTrigger>
                   <TabsTrigger value="instructor">Instructor</TabsTrigger>
                   <TabsTrigger value="reviews">Reviews</TabsTrigger>
                 </TabsList>
@@ -216,7 +218,7 @@ const CourseDetail = () => {
                 <TabsContent value="curriculum" className="mt-6">
                   <div className="space-y-4">
                     {curriculum.map((module, index) => (
-                      <Card key={index}>
+                      <Card key={index} className="hover-scale">
                         <CardHeader>
                           <div className="flex items-center justify-between">
                             <CardTitle className="text-lg">{module.title}</CardTitle>
@@ -224,17 +226,196 @@ const CourseDetail = () => {
                           </div>
                         </CardHeader>
                         <CardContent>
-                          <ul className="space-y-2">
+                          <ul className="space-y-3">
                             {module.lessons.map((lesson, lessonIndex) => (
-                              <li key={lessonIndex} className="flex items-center gap-2">
-                                <Play className="h-4 w-4 text-muted-foreground" />
-                                <span>{lesson}</span>
+                              <li key={lessonIndex} className="flex items-center gap-3 p-3 rounded-lg bg-muted/50 hover:bg-muted transition-colors">
+                                <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
+                                  {lessonIndex < 2 ? (
+                                    <CheckCircle className="h-4 w-4 text-green-500" />
+                                  ) : lessonIndex === 2 ? (
+                                    <Play className="h-4 w-4 text-primary" />
+                                  ) : (
+                                    <Lock className="h-4 w-4 text-muted-foreground" />
+                                  )}
+                                </div>
+                                <div className="flex-1">
+                                  <span className={lessonIndex >= 2 && lessonIndex > 2 ? "text-muted-foreground" : ""}>{lesson}</span>
+                                  <div className="flex items-center gap-2 mt-1">
+                                    <Badge variant="outline" className="text-xs">
+                                      {lessonIndex % 3 === 0 && <><Play className="w-3 h-3 mr-1" />Video</>}
+                                      {lessonIndex % 3 === 1 && <><FileText className="w-3 h-3 mr-1" />Reading</>}
+                                      {lessonIndex % 3 === 2 && <><BookOpen className="w-3 h-3 mr-1" />Interactive</>}
+                                    </Badge>
+                                    <span className="text-xs text-muted-foreground">
+                                      {Math.floor(Math.random() * 20) + 10} min
+                                    </span>
+                                  </div>
+                                </div>
+                                <Button 
+                                  variant="ghost" 
+                                  size="sm" 
+                                  disabled={lessonIndex > 2}
+                                  className="ml-auto"
+                                >
+                                  {lessonIndex < 2 ? "Review" : lessonIndex === 2 ? "Continue" : "Locked"}
+                                </Button>
                               </li>
                             ))}
                           </ul>
                         </CardContent>
                       </Card>
                     ))}
+                  </div>
+                </TabsContent>
+
+                <TabsContent value="quizzes" className="mt-6">
+                  <div className="space-y-6">
+                    <div className="text-center mb-8">
+                      <h3 className="text-2xl font-semibold mb-2">Course Assessments</h3>
+                      <p className="text-muted-foreground">Test your knowledge and track your progress</p>
+                    </div>
+                    
+                    <div className="grid gap-6">
+                      <Card className="hover-scale">
+                        <CardHeader>
+                          <div className="flex items-center justify-between">
+                            <CardTitle className="flex items-center gap-2">
+                              <BookOpen className="h-5 w-5 text-primary" />
+                              Module 1 Assessment
+                            </CardTitle>
+                            <Badge className="bg-green-100 text-green-800">Completed</Badge>
+                          </div>
+                        </CardHeader>
+                        <CardContent>
+                          <p className="text-muted-foreground mb-4">
+                            Test your understanding of computer basics and hardware fundamentals
+                          </p>
+                          <div className="grid grid-cols-3 gap-4 text-sm mb-4">
+                            <div className="text-center">
+                              <div className="font-semibold">10</div>
+                              <div className="text-muted-foreground">Questions</div>
+                            </div>
+                            <div className="text-center">
+                              <div className="font-semibold">85%</div>
+                              <div className="text-muted-foreground">Your Score</div>
+                            </div>
+                            <div className="text-center">
+                              <div className="font-semibold">15 min</div>
+                              <div className="text-muted-foreground">Duration</div>
+                            </div>
+                          </div>
+                          <Button variant="outline" className="w-full">
+                            <CheckCircle className="h-4 w-4 mr-2" />
+                            Review Answers
+                          </Button>
+                        </CardContent>
+                      </Card>
+
+                      <Card className="hover-scale">
+                        <CardHeader>
+                          <div className="flex items-center justify-between">
+                            <CardTitle className="flex items-center gap-2">
+                              <BookOpen className="h-5 w-5 text-primary" />
+                              Module 2 Assessment
+                            </CardTitle>
+                            <Badge variant="default">Available</Badge>
+                          </div>
+                        </CardHeader>
+                        <CardContent>
+                          <p className="text-muted-foreground mb-4">
+                            Assess your web development fundamentals knowledge
+                          </p>
+                          <div className="grid grid-cols-3 gap-4 text-sm mb-4">
+                            <div className="text-center">
+                              <div className="font-semibold">15</div>
+                              <div className="text-muted-foreground">Questions</div>
+                            </div>
+                            <div className="text-center">
+                              <div className="font-semibold">70%</div>
+                              <div className="text-muted-foreground">Pass Score</div>
+                            </div>
+                            <div className="text-center">
+                              <div className="font-semibold">20 min</div>
+                              <div className="text-muted-foreground">Duration</div>
+                            </div>
+                          </div>
+                          <Button className="w-full">
+                            <Play className="h-4 w-4 mr-2" />
+                            Start Assessment
+                          </Button>
+                        </CardContent>
+                      </Card>
+
+                      <Card className="hover-scale opacity-60">
+                        <CardHeader>
+                          <div className="flex items-center justify-between">
+                            <CardTitle className="flex items-center gap-2">
+                              <BookOpen className="h-5 w-5 text-muted-foreground" />
+                              Module 3 Assessment
+                            </CardTitle>
+                            <Badge variant="outline">Locked</Badge>
+                          </div>
+                        </CardHeader>
+                        <CardContent>
+                          <p className="text-muted-foreground mb-4">
+                            Digital marketing essentials evaluation
+                          </p>
+                          <div className="grid grid-cols-3 gap-4 text-sm mb-4">
+                            <div className="text-center">
+                              <div className="font-semibold">12</div>
+                              <div className="text-muted-foreground">Questions</div>
+                            </div>
+                            <div className="text-center">
+                              <div className="font-semibold">75%</div>
+                              <div className="text-muted-foreground">Pass Score</div>
+                            </div>
+                            <div className="text-center">
+                              <div className="font-semibold">18 min</div>
+                              <div className="text-muted-foreground">Duration</div>
+                            </div>
+                          </div>
+                          <Button disabled className="w-full">
+                            <Lock className="h-4 w-4 mr-2" />
+                            Complete Module 2 First
+                          </Button>
+                        </CardContent>
+                      </Card>
+
+                      <Card className="hover-scale opacity-60">
+                        <CardHeader>
+                          <div className="flex items-center justify-between">
+                            <CardTitle className="flex items-center gap-2">
+                              <Award className="h-5 w-5 text-muted-foreground" />
+                              Final Certification Exam
+                            </CardTitle>
+                            <Badge variant="outline">Locked</Badge>
+                          </div>
+                        </CardHeader>
+                        <CardContent>
+                          <p className="text-muted-foreground mb-4">
+                            Comprehensive final assessment covering all course modules
+                          </p>
+                          <div className="grid grid-cols-3 gap-4 text-sm mb-4">
+                            <div className="text-center">
+                              <div className="font-semibold">30</div>
+                              <div className="text-muted-foreground">Questions</div>
+                            </div>
+                            <div className="text-center">
+                              <div className="font-semibold">80%</div>
+                              <div className="text-muted-foreground">Pass Score</div>
+                            </div>
+                            <div className="text-center">
+                              <div className="font-semibold">45 min</div>
+                              <div className="text-muted-foreground">Duration</div>
+                            </div>
+                          </div>
+                          <Button disabled className="w-full">
+                            <Lock className="h-4 w-4 mr-2" />
+                            Complete All Modules
+                          </Button>
+                        </CardContent>
+                      </Card>
+                    </div>
                   </div>
                 </TabsContent>
                 
