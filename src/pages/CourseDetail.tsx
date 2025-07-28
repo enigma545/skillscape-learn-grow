@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import InteractiveQuiz from "@/components/InteractiveQuiz";
 import ictImage from "@/assets/course-ict.jpg";
 import craftsImage from "@/assets/course-crafts.jpg";
 import businessImage from "@/assets/course-business.jpg";
@@ -19,6 +20,7 @@ import businessImage from "@/assets/course-business.jpg";
 const CourseDetail = () => {
   const { id } = useParams();
   const [isWishlisted, setIsWishlisted] = useState(false);
+  const [activeQuiz, setActiveQuiz] = useState<string | null>(null);
   
   // Mock course data - in real app this would come from API
   const courseData = {
@@ -119,6 +121,98 @@ const CourseDetail = () => {
       helpful: 8
     }
   ];
+
+  // Mock quiz data
+  const quizzes = {
+    module1: {
+      title: "Module 1: Computer Basics Assessment",
+      questions: [
+        {
+          id: 1,
+          question: "What is the primary function of a computer's CPU?",
+          options: [
+            "Store data permanently",
+            "Process instructions and perform calculations",
+            "Display information to the user",
+            "Connect to the internet"
+          ],
+          correctAnswer: 1,
+          explanation: "The CPU (Central Processing Unit) is responsible for executing instructions and performing calculations. It's often called the 'brain' of the computer."
+        },
+        {
+          id: 2,
+          question: "Which of the following is considered volatile memory?",
+          options: [
+            "Hard Drive",
+            "SSD (Solid State Drive)",
+            "RAM (Random Access Memory)",
+            "CD-ROM"
+          ],
+          correctAnswer: 2,
+          explanation: "RAM is volatile memory, meaning it loses its data when power is turned off. Unlike storage devices, RAM is used for temporary data storage while the computer is running."
+        },
+        {
+          id: 3,
+          question: "What does 'HTTP' stand for in web addresses?",
+          options: [
+            "Hyperlink Transfer Text Protocol",
+            "HyperText Transfer Protocol",
+            "High Technology Transfer Protocol",
+            "Hyperlink Text Transfer Program"
+          ],
+          correctAnswer: 1,
+          explanation: "HTTP stands for HyperText Transfer Protocol. It's the foundation of data communication on the World Wide Web."
+        }
+      ]
+    },
+    module2: {
+      title: "Module 2: Web Development Fundamentals",
+      questions: [
+        {
+          id: 1,
+          question: "Which HTML element is used to create a hyperlink?",
+          options: [
+            "<link>",
+            "<a>", 
+            "<href>",
+            "<url>"
+          ],
+          correctAnswer: 1,
+          explanation: "The <a> (anchor) element is used to create hyperlinks in HTML. The 'href' attribute specifies the destination of the link."
+        },
+        {
+          id: 2,
+          question: "What does CSS stand for?",
+          options: [
+            "Computer Style Sheets",
+            "Creative Style Sheets", 
+            "Cascading Style Sheets",
+            "Colorful Style Sheets"
+          ],
+          correctAnswer: 2,
+          explanation: "CSS stands for Cascading Style Sheets. It's used to describe the presentation and styling of HTML documents."
+        },
+        {
+          id: 3,
+          question: "Which JavaScript method is used to select an element by its ID?",
+          options: [
+            "document.querySelector()",
+            "document.getElementById()",
+            "document.getElementsByClassName()",
+            "document.getElement()"
+          ],
+          correctAnswer: 1,
+          explanation: "document.getElementById() is the method specifically designed to select an element by its unique ID attribute."
+        }
+      ]
+    }
+  };
+
+  const handleQuizComplete = (quizId: string, score: number, answers: number[]) => {
+    console.log(`Quiz ${quizId} completed with score: ${score}%`, answers);
+    setActiveQuiz(null);
+    // Here you would typically save the results to a backend
+  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -269,82 +363,107 @@ const CourseDetail = () => {
                 </TabsContent>
 
                 <TabsContent value="quizzes" className="mt-6">
-                  <div className="space-y-6">
-                    <div className="text-center mb-8">
-                      <h3 className="text-2xl font-semibold mb-2">Course Assessments</h3>
-                      <p className="text-muted-foreground">Test your knowledge and track your progress</p>
+                  {activeQuiz ? (
+                    <div className="space-y-6">
+                      <Button 
+                        variant="outline" 
+                        onClick={() => setActiveQuiz(null)}
+                        className="mb-4"
+                      >
+                        <ArrowLeft className="h-4 w-4 mr-2" />
+                        Back to Quiz List
+                      </Button>
+                      <InteractiveQuiz
+                        title={quizzes[activeQuiz as keyof typeof quizzes].title}
+                        questions={quizzes[activeQuiz as keyof typeof quizzes].questions}
+                        timeLimit={20}
+                        onComplete={(score, answers) => handleQuizComplete(activeQuiz, score, answers)}
+                      />
                     </div>
-                    
-                    <div className="grid gap-6">
-                      <Card className="hover-scale">
-                        <CardHeader>
-                          <div className="flex items-center justify-between">
-                            <CardTitle className="flex items-center gap-2">
-                              <BookOpen className="h-5 w-5 text-primary" />
-                              Module 1 Assessment
-                            </CardTitle>
-                            <Badge className="bg-green-100 text-green-800">Completed</Badge>
-                          </div>
-                        </CardHeader>
-                        <CardContent>
-                          <p className="text-muted-foreground mb-4">
-                            Test your understanding of computer basics and hardware fundamentals
-                          </p>
-                          <div className="grid grid-cols-3 gap-4 text-sm mb-4">
-                            <div className="text-center">
-                              <div className="font-semibold">10</div>
-                              <div className="text-muted-foreground">Questions</div>
+                  ) : (
+                    <div className="space-y-6">
+                      <div className="text-center mb-8">
+                        <h3 className="text-2xl font-semibold mb-2">Course Assessments</h3>
+                        <p className="text-muted-foreground">Test your knowledge and track your progress</p>
+                      </div>
+                      
+                      <div className="grid gap-6">
+                        <Card className="hover-scale">
+                          <CardHeader>
+                            <div className="flex items-center justify-between">
+                              <CardTitle className="flex items-center gap-2">
+                                <BookOpen className="h-5 w-5 text-primary" />
+                                Module 1 Assessment
+                              </CardTitle>
+                              <Badge className="bg-green-100 text-green-800">Completed</Badge>
                             </div>
-                            <div className="text-center">
-                              <div className="font-semibold">85%</div>
-                              <div className="text-muted-foreground">Your Score</div>
+                          </CardHeader>
+                          <CardContent>
+                            <p className="text-muted-foreground mb-4">
+                              Test your understanding of computer basics and hardware fundamentals
+                            </p>
+                            <div className="grid grid-cols-3 gap-4 text-sm mb-4">
+                              <div className="text-center">
+                                <div className="font-semibold">3</div>
+                                <div className="text-muted-foreground">Questions</div>
+                              </div>
+                              <div className="text-center">
+                                <div className="font-semibold">85%</div>
+                                <div className="text-muted-foreground">Your Score</div>
+                              </div>
+                              <div className="text-center">
+                                <div className="font-semibold">15 min</div>
+                                <div className="text-muted-foreground">Duration</div>
+                              </div>
                             </div>
-                            <div className="text-center">
-                              <div className="font-semibold">15 min</div>
-                              <div className="text-muted-foreground">Duration</div>
-                            </div>
-                          </div>
-                          <Button variant="outline" className="w-full">
-                            <CheckCircle className="h-4 w-4 mr-2" />
-                            Review Answers
-                          </Button>
-                        </CardContent>
-                      </Card>
+                            <Button 
+                              variant="outline" 
+                              className="w-full"
+                              onClick={() => setActiveQuiz('module1')}
+                            >
+                              <CheckCircle className="h-4 w-4 mr-2" />
+                              Review / Retake
+                            </Button>
+                          </CardContent>
+                        </Card>
 
-                      <Card className="hover-scale">
-                        <CardHeader>
-                          <div className="flex items-center justify-between">
-                            <CardTitle className="flex items-center gap-2">
-                              <BookOpen className="h-5 w-5 text-primary" />
-                              Module 2 Assessment
-                            </CardTitle>
-                            <Badge variant="default">Available</Badge>
-                          </div>
-                        </CardHeader>
-                        <CardContent>
-                          <p className="text-muted-foreground mb-4">
-                            Assess your web development fundamentals knowledge
-                          </p>
-                          <div className="grid grid-cols-3 gap-4 text-sm mb-4">
-                            <div className="text-center">
-                              <div className="font-semibold">15</div>
-                              <div className="text-muted-foreground">Questions</div>
+                        <Card className="hover-scale">
+                          <CardHeader>
+                            <div className="flex items-center justify-between">
+                              <CardTitle className="flex items-center gap-2">
+                                <BookOpen className="h-5 w-5 text-primary" />
+                                Module 2 Assessment
+                              </CardTitle>
+                              <Badge variant="default">Available</Badge>
                             </div>
-                            <div className="text-center">
-                              <div className="font-semibold">70%</div>
-                              <div className="text-muted-foreground">Pass Score</div>
+                          </CardHeader>
+                          <CardContent>
+                            <p className="text-muted-foreground mb-4">
+                              Assess your web development fundamentals knowledge
+                            </p>
+                            <div className="grid grid-cols-3 gap-4 text-sm mb-4">
+                              <div className="text-center">
+                                <div className="font-semibold">3</div>
+                                <div className="text-muted-foreground">Questions</div>
+                              </div>
+                              <div className="text-center">
+                                <div className="font-semibold">70%</div>
+                                <div className="text-muted-foreground">Pass Score</div>
+                              </div>
+                              <div className="text-center">
+                                <div className="font-semibold">15 min</div>
+                                <div className="text-muted-foreground">Duration</div>
+                              </div>
                             </div>
-                            <div className="text-center">
-                              <div className="font-semibold">20 min</div>
-                              <div className="text-muted-foreground">Duration</div>
-                            </div>
-                          </div>
-                          <Button className="w-full">
-                            <Play className="h-4 w-4 mr-2" />
-                            Start Assessment
-                          </Button>
-                        </CardContent>
-                      </Card>
+                            <Button 
+                              className="w-full"
+                              onClick={() => setActiveQuiz('module2')}
+                            >
+                              <Play className="h-4 w-4 mr-2" />
+                              Start Assessment
+                            </Button>
+                          </CardContent>
+                        </Card>
 
                       <Card className="hover-scale opacity-60">
                         <CardHeader>
@@ -415,8 +534,9 @@ const CourseDetail = () => {
                           </Button>
                         </CardContent>
                       </Card>
+                      </div>
                     </div>
-                  </div>
+                  )}
                 </TabsContent>
                 
                 <TabsContent value="instructor" className="mt-6">

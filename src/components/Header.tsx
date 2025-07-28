@@ -13,7 +13,8 @@ const Header = () => {
     { label: "Courses", href: "/courses" },
     { label: "About", href: "/about" },
     { label: "Contact", href: "/contact" },
-    { label: "Dashboard", href: "/dashboard" },
+    { label: "Student Dashboard", href: "/dashboard" },
+    { label: "Instructor", href: "/instructor" },
   ];
 
   return (
