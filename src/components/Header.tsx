@@ -10,11 +10,11 @@ const Header = () => {
 
   const navLinks = [
     { label: "Home", href: "/" },
-    { label: "Courses", href: "/courses" },
+    { label: "Programs", href: "/programs" },
+    { label: "Admissions", href: "/admissions" },
+    { label: "News & Events", href: "/news" },
     { label: "About", href: "/about" },
     { label: "Contact", href: "/contact" },
-    { label: "Student Dashboard", href: "/dashboard" },
-    { label: "Instructor", href: "/instructor" },
   ];
 
   return (
@@ -24,7 +24,7 @@ const Header = () => {
         <div className="flex items-center gap-2">
           <GraduationCap className="h-8 w-8 text-primary" />
           <span className="text-xl font-bold bg-gradient-primary bg-clip-text text-transparent">
-            SkillAcademy
+            Lagos Institution
           </span>
         </div>
 
@@ -56,7 +56,7 @@ const Header = () => {
           <div className="relative flex-1">
             <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
             <Input
-              placeholder="Search courses..."
+              placeholder="Search programs..."
               className="pl-10"
             />
           </div>
@@ -88,13 +88,13 @@ const Header = () => {
             <div className="flex flex-col gap-6 mt-6">
               <div className="flex items-center gap-2">
                 <GraduationCap className="h-6 w-6 text-primary" />
-                <span className="text-lg font-bold">SkillAcademy</span>
+                <span className="text-lg font-bold">Lagos Institution</span>
               </div>
               
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                 <Input
-                  placeholder="Search courses..."
+                  placeholder="Search programs..."
                   className="pl-10"
                 />
               </div>
